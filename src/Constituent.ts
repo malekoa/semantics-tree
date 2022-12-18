@@ -6,6 +6,11 @@ export class Constituent {
         this.children = children;
     }
 
+    // hash function for the Constituent class
+    hash(): string {
+        return this.label + this.children.map(child => child.hash()).join('');
+    }
+
     // returns a copy of the constituent
     copy() {
         return new Constituent(this.label, this.children.map(child => child.copy()));
