@@ -18,7 +18,9 @@ Tree data structure. A constituent consists of a label and an array of child con
 Say we define a grammar with the following production rules:
 
 $$ S \to NP \enspace VP $$
+
 $$ NP \to Det \enspace N' $$
+
 $$ VP \to V_i $$
 
 These production rules can be rewritten as an array of 2-tuples:
