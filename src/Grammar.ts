@@ -1,10 +1,10 @@
 export class Grammar {
     production_rules_map: Map<string, string[]>;
-    start_symbol: string;
+    startSymbol: string;
 
-    constructor(production_rules: Array<[string, string]>, start_symbol: string) {
+    constructor(production_rules: Array<[string, string]>, startSymbol: string) {
         this.production_rules_map = this.buildProductionRulesMap(production_rules);
-        this.start_symbol = start_symbol;
+        this.startSymbol = startSymbol;
     }
 
     // Builds a hash map from the right-hand side of a production rule to the
