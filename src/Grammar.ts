@@ -3,13 +3,13 @@ export class Grammar {
     startSymbol: string;
 
     constructor(production_rules: Array<[string, string]>, startSymbol: string) {
-        this.production_rules_map = this.buildProductionRulesMap(production_rules);
+        this.production_rules_map = Grammar.buildProductionRulesMap(production_rules);
         this.startSymbol = startSymbol;
     }
 
     // Builds a hash map from the right-hand side of a production rule to the
     // left-hand side of the production rule.
-    buildProductionRulesMap(production_rules: Array<[string, string]>) {
+    private static buildProductionRulesMap(production_rules: Array<[string, string]>) {
         const map = new Map();
         for (const [lhs, rhs] of production_rules) {
             if (map.has(rhs)) {
