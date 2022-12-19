@@ -3,7 +3,7 @@ import { State } from './State';
 import { Constituent } from './Constituent';
 
 export class Parser {
-    static prePercolate(s: State, g: Grammar): void {
+    private static prePercolate(s: State, g: Grammar): State {
         // for i = 0 to the length of the constituents array
         for (let i = 0; i < s.constituents.length; i++) {
             // get the constituent at index i
@@ -16,18 +16,20 @@ export class Parser {
                 s.constituents[i] = new Constituent(newHead, [constituent]);
             }
         }
+        return new State(s.constituents, g);
     }
 
     static getAllValidSyntaxTrees(sentence: string, grammar: Grammar, prePercolate = true): Array<Constituent> {
-        const s0 = new State(sentence, grammar);
+        // initialize state_zero with the sentence and the grammar, and pre-percolate it if necessary 
+        const s0 = prePercolate ? Parser.prePercolate(new State(sentence, grammar), grammar) : new State(sentence, grammar);
+        // initialize the stack with state_zero
         const Z = [s0];
+        // initialize the list of valid syntax trees
         const validSyntaxTrees = [];
+        // initialize the set of dead ends
         const deadEnds = new Set();
+        // initialize the set of found trees
         const foundTrees = new Set();
-
-        if (prePercolate) {
-            this.prePercolate(s0, grammar);
-        }
 
         while (Z.length > 0) {
             // peek at the last element in the stack
@@ -59,11 +61,18 @@ export class Parser {
     }
 }
 
-const sentence = 'the dog barks and the cat meows or the dog meows and the cat barks';
-const grammar = new Grammar([['S', 'NP VP'], ['NP', 'Det N'], ['VP', 'V'], ['Det', 'the'], ['N', 'dog'], ['N', 'cat'], ['V', 'barks'], ['V', 'meows'], ['S', 'S coord S'], ['coord', 'and'], ['coord', 'or']], 'S');
-const allValidSyntaxTrees = Parser.getAllValidSyntaxTrees(sentence, grammar);
-console.log(`sentence: ${sentence}`);
-// pretty print all the trees
-for (const tree of allValidSyntaxTrees) {
-    console.log(tree.prettyString());
+// initialize a sentence
+const sentence = 'the dog barks';
+
+// initialize a grammar with the production rules and the start symbol 'S'
+const grammar = new Grammar([['S', 'NP VP'], ['NP', 'Det N'], ['VP', 'V'], ['Det', 'the'], ['N', 'dog'], ['V', 'barks']], 'S');
+
+// get all valid syntax trees for the sentence
+const validSyntaxTrees = Parser.getAllValidSyntaxTrees(sentence, grammar);
+
+
+// for each valid syntax tree, print its stringified json representation
+for (const validSyntaxTree of validSyntaxTrees) {
+    const j = validSyntaxTree.json();
+    console.log(JSON.stringify(j, null, 2));
 }
