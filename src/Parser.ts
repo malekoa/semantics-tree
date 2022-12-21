@@ -70,9 +70,5 @@ const grammar = new Grammar([['S', 'NP VP'], ['NP', 'Det N'], ['VP', 'V'], ['Det
 // get all valid syntax trees for the sentence
 const validSyntaxTrees = Parser.getAllValidSyntaxTrees(sentence, grammar);
 
-
-// for each valid syntax tree, print its stringified json representation
-for (const validSyntaxTree of validSyntaxTrees) {
-    const j = validSyntaxTree.json();
-    console.log(JSON.stringify(j, null, 2));
-}
+// for each valid syntax tree, get the prettified string representation
+validSyntaxTrees.forEach(tree => console.log(tree.prettyString()));

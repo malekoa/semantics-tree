@@ -20,6 +20,7 @@ export class State {
         return this.constituents.map(constituent => constituent.hash()).join('');
     }
 
+    // TODO: make a lexer class
     // lexes a string into an array of Constituents
     private static lex(sentence: string) {
         return sentence.split(' ').map(word => new Constituent(word));
